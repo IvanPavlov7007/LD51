@@ -145,8 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialTimerTick: 10
-  initialTimeFrame: 1
   startOnAwake: 1
+  initialTimeFrame: 2
 --- !u!1 &502042465569236294
 GameObject:
   m_ObjectHideFlags: 0
