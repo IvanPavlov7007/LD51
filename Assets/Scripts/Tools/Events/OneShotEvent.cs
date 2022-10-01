@@ -10,6 +10,9 @@ public class OneShotEvent : MonoBehaviour
 
     protected virtual void Start()
     {
+        //TODO : remove boilerplate leftover
+        if (PlayerMovement.Instance == null)
+            return;
         player = PlayerMovement.Instance.transform;
     }
     protected bool played = false;
