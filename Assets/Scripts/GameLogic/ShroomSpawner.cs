@@ -66,7 +66,7 @@ public class ShroomSpawner : MonoBehaviour
         for(int i = 0; i < shroomsCount; i++)
         {
             shroomsShowtimes[i] = n;
-            n += Random.Range(0, 2);
+            n += Random.Range(1, 2);
         }
 
         //TODO: macke timerTick global across all timers
