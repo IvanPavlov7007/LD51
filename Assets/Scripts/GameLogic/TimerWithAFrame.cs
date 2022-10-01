@@ -2,42 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimerWithAFrame : MonoBehaviour
+public class TimerWithAFrame : ClampedTimer
 {
-    [SerializeField]
-    float initialTimerTick = 10f;
-    public float timerTick { get; set; }
 
     [SerializeField]
     float initialTimeFrame = 0.5f;
     public float timeFrame { get; set; }
-
-    [SerializeField]
-    bool startOnAwake;
-    public bool paused { get; private set; }
 
     public event System.Action onFrameTimeout;
     public event System.Action onFrameEnter;
 
 
     float halfFrameTime;
-    public float elapsedTime { get; private set; }
     public bool currentlyInFrame { get; private set; }
 
     bool iterationEnterTimeoutTriggered;
     bool iterationExitTimeoutTriggered;
-    protected virtual void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         elapsedTime = 0f;
-        timerTick = initialTimerTick;
         timeFrame = initialTimeFrame;
-        paused = !startOnAwake;
         halfFrameTime = timeFrame / 2f;
     }
 
 
     //bool firstTimeDone = false;
-    protected virtual void Update()
+    protected override void Update()
     {
         if (paused)
             return;

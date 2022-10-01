@@ -20,6 +20,8 @@ public class Shroom : MonoBehaviour
         timer.onFrameEnter += FrameEnter;
         currentState = ShroomState.Upcomming;
         displayState();
+
+        BeatManager.instance.registerNewShroom(this);
     }
 
     public void Click()
