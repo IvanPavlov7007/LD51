@@ -17,11 +17,15 @@ public class TimerWithAFrame : MonoBehaviour
     public bool paused { get; private set; }
 
     public event System.Action onFrameTimeout;
+    public event System.Action onFrameEnter;
+
 
     float halfFrameTime;
     public float elapsedTime { get; private set; }
+    public bool currentlyInFrame { get; private set; }
 
-    bool iterationTimeoutTriggered;
+    bool iterationEnterTimeoutTriggered;
+    bool iterationExitTimeoutTriggered;
     protected virtual void Awake()
     {
         elapsedTime = 0f;
@@ -40,14 +44,24 @@ public class TimerWithAFrame : MonoBehaviour
         elapsedTime += Time.deltaTime;
         if (elapsedTime > timerTick)
         {
-            iterationTimeoutTriggered = false;
+            iterationExitTimeoutTriggered = false;
+            iterationEnterTimeoutTriggered = false;
             elapsedTime -= timerTick;
         }    
 
-        if(elapsedTime > halfFrameTime && !iterationTimeoutTriggered)
+        if(elapsedTime >= timerTick - halfFrameTime && !iterationEnterTimeoutTriggered)
         {
-            iterationTimeoutTriggered = true;
-            if(onFrameTimeout != null)
+            iterationEnterTimeoutTriggered = true;
+            currentlyInFrame = true;
+            if (onFrameEnter != null)
+                onFrameEnter();
+        }
+
+        if(elapsedTime > halfFrameTime && !iterationExitTimeoutTriggered)
+        {
+            iterationExitTimeoutTriggered = true;
+            currentlyInFrame = false;
+            if (onFrameTimeout != null)
                 onFrameTimeout();
         }
 
@@ -67,6 +81,6 @@ public class TimerWithAFrame : MonoBehaviour
     {
         if (paused)
             Debug.Log("paused: " + gameObject.name);
-        return (elapsedTime < halfFrameTime || elapsedTime > timerTick - halfFrameTime);
+        return currentlyInFrame;//(elapsedTime < halfFrameTime || elapsedTime > timerTick - halfFrameTime);
     }
 }

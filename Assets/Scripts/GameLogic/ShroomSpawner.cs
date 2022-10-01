@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SchroomSpawner : MonoBehaviour
+public class ShroomSpawner : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
