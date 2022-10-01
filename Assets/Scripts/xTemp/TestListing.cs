@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using Malee.List;
+//using Malee.List;
 
 public class TestListing : MonoBehaviour
 {
-    [Reorderable]
-    public RerList tes;
+    /*[Reorderable]
+    public RerList tes;*/
 }
 
 
@@ -19,6 +19,6 @@ public class TestListForTest {
 }
 
 [System.Serializable]
-public class RerList : ReorderableArray<TestListForTest> { }
+//public class RerList : ReorderableArray<TestListForTest> { }
 
 public enum TestEn { One, Two, Three}
