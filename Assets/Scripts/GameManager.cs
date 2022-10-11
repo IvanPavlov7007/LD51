@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public int initialLifes = 3;
-
     public int currentLifes;
+
+    public Enemy enemy;
 
     public int score { get; private set; }
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShroomSpawner : MonoBehaviour
+public class RandomTimeShroomSpawner : MonoBehaviour
 {
     //[SerializeField]
     //int count;
@@ -47,6 +47,7 @@ public class ShroomSpawner : MonoBehaviour
         {
             int r = Random.Range(0, availableBeats.Count);
             shroomsBeats[i] = availableBeats[r];
+            availableBeats.RemoveAt(r);
         }
 
         availableBeats = new List<int>();
@@ -58,6 +59,7 @@ public class ShroomSpawner : MonoBehaviour
         {
             int r = Random.Range(0, availableBeats.Count);
             shroomsPos[i] = availableBeats[r];
+            availableBeats.RemoveAt(r);
         }
 
 
@@ -80,7 +82,7 @@ public class ShroomSpawner : MonoBehaviour
 
     IEnumerator createShroom(int index, int tick)
     {
-        yield return new WaitForSeconds(shroomsBeats[index] + tick * shroomsShowtimes[index]);
+        yield return new WaitForSeconds(shroomsBeats[index] * tick / (float)shroomsCount + tick * shroomsShowtimes[index]);
         Instantiate(shroomPrefab, positions[shroomsPos[index]]);
     }
 }

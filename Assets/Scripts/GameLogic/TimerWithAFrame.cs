@@ -58,6 +58,13 @@ public class TimerWithAFrame : ClampedTimer
 
     }
 
+    public virtual void Reset()
+    {
+        elapsedTime = 0f;
+        iterationExitTimeoutTriggered = false;
+        iterationEnterTimeoutTriggered = false;
+    }
+
     public virtual void Continue()
     {
         paused = false;
