@@ -14,8 +14,19 @@ public class Shroom : MonoBehaviour
     int currentIteration;
     Transform body;
 
+    public int price;
+    [SerializeField]
+    private ShroomType _shroomType;
+    public ShroomType shroomType { get { return _shroomType; } private set { _shroomType = value; } }
+
     public event Action onPunish;
     public event Action onReward;
+    public event Action onReady;
+
+    private void Awake()
+    {
+
+    }
 
     protected void Start()
     {
@@ -25,10 +36,21 @@ public class Shroom : MonoBehaviour
         timer.onFrameTimeout += FrameTimeOut;
         timer.onFrameEnter += FrameEnter;
         currentState = ShroomState.Upcomming;
+
+        ShroomPool.getShroomClass(shroomType).shrooms.Add(this);
+
+        lifes = 2;
+        tries = 1;
+
         displayState();
 
         if(BeatManager.instance != null)
             BeatManager.instance.registerNewShroom(this);
+    }
+
+    private void OnDestroy()
+    {
+        ShroomPool.getShroomClass(shroomType).shrooms.Remove(this);
     }
 
     public void Click()
@@ -72,8 +94,8 @@ public class Shroom : MonoBehaviour
         displayState();
     }
 
-    int lifes = 2;
-    int tries = 1;
+    public int lifes { get; private set; }
+    public int tries { get; private set; }
 
     void reward()
     {
@@ -96,10 +118,9 @@ public class Shroom : MonoBehaviour
             onPunish();
         tries--;
         lifes--;
-        if (lifes < 0)
+        if (lifes < 1)
             Destroy(gameObject, 0.5f);
-
-        if (tries < 0)
+        else if (tries < 0)
             Launch();
 
         Tween.LocalScale(body, body.localScale * 5f / 6f, 0.5f, 0f, Tween.EaseSpring);
@@ -111,11 +132,10 @@ public class Shroom : MonoBehaviour
         StartCoroutine(visualPunishment());
     }
 
-    void Launch()
+    public void Launch()
     {
-        Tween.Position(transform, transform.position + Vector3.right * 20, 2f, 0f, Tween.EaseIn);
-        Run.After(1f, () => { GameManager.instance.enemy.Hit((int)Math.Pow(10, lifes - 1)); });
-        Destroy(gameObject, 2f);
+        if (onReady != null)
+            onReady();
     }
 
     IEnumerator visualPunishment()
@@ -135,5 +155,8 @@ public class Shroom : MonoBehaviour
         Click();
     }
 }
+[Serializable]
+public enum ShroomType { Worker, Attacker }
+
 
 public enum ShroomState { Default, Upcomming, Hitnow}

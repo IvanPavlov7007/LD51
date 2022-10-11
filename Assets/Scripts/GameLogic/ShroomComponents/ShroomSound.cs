@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
-public class ShroomSound : MonoBehaviour
+public class ShroomSound : ShroomComponent
 {
     [SerializeField]
     AudioClip sound;
     AudioSource aud;
-    Shroom shroom;
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         shroom = GetComponent<Shroom>();
         aud = GetComponent<AudioSource>();
-        shroom.onReward += onReward;
         aud.PlayOneShot(sound);
     }
 
-    void onReward()
+    protected override void onReward()
     {
         aud.PlayOneShot(sound);
+    }
+
+    protected override void onPunish()
+    {
+    }
+
+    protected override void onReady()
+    {
     }
 }

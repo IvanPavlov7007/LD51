@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScoreDisplayer : PropertyDisplayer
+public class MoneyDisplayer : PropertyDisplayer
 {
     private void LateUpdate()
     {
-        textMeshPro.text = gameManager.score.ToString();
+        textMeshPro.text = gameManager.money.ToString();
     }
 }

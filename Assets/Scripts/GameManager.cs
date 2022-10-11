@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public int score { get; private set; }
 
+    public double money { get; set; }
+
     void Awake()
     {
         if (instance == null)
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
 
         currentLifes = initialLifes;
     }
+
 
     public void AddScore(int amount)
     {
