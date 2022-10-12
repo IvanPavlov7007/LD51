@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Manual Spawn test.unity
+    guid: 49aa497b75e75d442afaa8b7286d2576
+  - enabled: 1
     path: Assets/Scenes/First Weekend/MainMenu.unity
     guid: 885e5e911a4c05e49a2fd7287a1970dc
   - enabled: 1
     path: Assets/Scenes/First Weekend/LoadingScene.unity
     guid: 225adf3bbe8863748b31003600451880
-  - enabled: 1
-    path: Assets/Scenes/First Weekend/RandomGenerationTest.unity
-    guid: 726177c0adefc9a41b71cde0a7046d65
   m_configObjects: {}

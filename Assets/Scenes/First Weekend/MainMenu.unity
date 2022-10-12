@@ -369,7 +369,7 @@ PrefabInstance:
     - target: {fileID: 5872300822389494793, guid: e1b521a31e49aa44882cf698839654bf,
         type: 3}
       propertyPath: sceneToLoad
-      value: RandomGenerationTest
+      value: Manual Spawn test
       objectReference: {fileID: 0}
     - target: {fileID: 5872300822679588595, guid: e1b521a31e49aa44882cf698839654bf,
         type: 3}

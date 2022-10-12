@@ -2,26 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UniRx;
 
+[RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
-    public int initialLifes;
-    public int lifes { get; private set; }
+    public double atackTime;
+    public int damage;
 
-    public Action onDeath;
+    public Health health { get; private set; }
 
-    private void Awake()
+    CompositeDisposable disposables = new CompositeDisposable();
+
+    private void Start()
     {
-        lifes = initialLifes;
+        health = GetComponent<Health>();
+        Observable
+            .Interval(TimeSpan.FromSeconds(atackTime))
+            .Subscribe(x => {
+                GameManager.instance.baseHealth.Hit(damage);
+            })
+            .AddTo(disposables);
     }
 
-    public void Hit(int count)
-    {
-        lifes -= count;
-        if(lifes <= 0)
-        {
-            if (onDeath != null)
-                onDeath();
-        }
-    }
+    private void OnDisable() => disposables.Clear();
+
+
 }

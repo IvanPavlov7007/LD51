@@ -12,9 +12,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     public int initialLifes = 3;
+    [SerializeField]
+    public int initMoney = 3;
     public int currentLifes;
 
     public Enemy enemy;
+    public Health baseHealth;
 
     public int score { get; private set; }
 
@@ -28,6 +31,7 @@ public class GameManager : MonoBehaviour
             Destroy(this);
 
         currentLifes = initialLifes;
+        money = initMoney;
     }
 
 
