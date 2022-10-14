@@ -28,4 +28,9 @@ public class ShroomSound : ShroomComponent
     protected override void onReady()
     {
     }
+
+    protected override void onPunishMiss()
+    {
+
+    }
 }

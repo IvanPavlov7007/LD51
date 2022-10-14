@@ -10,6 +10,11 @@ public class ShroomAttacker : ShroomComponent
     {
     }
 
+    protected override void onPunishMiss()
+    {
+
+    }
+
     protected override void onReady()
     {
         Tween.Position(transform, transform.position + Vector3.right * 20, 2f, 0f, Tween.EaseIn);

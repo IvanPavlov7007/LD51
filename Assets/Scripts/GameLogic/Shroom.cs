@@ -20,8 +20,11 @@ public class Shroom : MonoBehaviour
     public ShroomType shroomType { get { return _shroomType; } private set { _shroomType = value; } }
 
     public event Action onPunish;
+    public event Action onPunishMiss;
     public event Action onReward;
     public event Action onReady;
+
+    public int tweenId;
 
     private void Awake()
     {
@@ -30,7 +33,7 @@ public class Shroom : MonoBehaviour
 
     protected void Start()
     {
-        body = transform.Find("body");
+        body = transform.Find("movable/body");
         timer = GetComponent<TimerWithAFrame>();
         visualStateMachine = GetComponentInChildren<StateMachine>();
         timer.onFrameTimeout += FrameTimeOut;
@@ -39,8 +42,8 @@ public class Shroom : MonoBehaviour
 
         ShroomPool.getShroomClass(shroomType).shrooms.Add(this);
 
-        lifes = 2;
-        tries = 1;
+        lifes = 3;
+        tries = 4;
 
         displayState();
 
@@ -53,11 +56,15 @@ public class Shroom : MonoBehaviour
         ShroomPool.getShroomClass(shroomType).shrooms.Remove(this);
     }
 
+    bool currentTimeFrameClicked = false;
+
     public void Click()
     {
-        if(timer.CheckIfInFrame() && !currentIterationClicked && currentIteration > 0)
+        if(timer.CheckIfInFrame())
         {
-            reward();
+            if(!currentTimeFrameClicked)
+                reward();
+            currentTimeFrameClicked = true;
             currentState = ShroomState.Default;
             displayState();
         }
@@ -84,6 +91,7 @@ public class Shroom : MonoBehaviour
             }
         }
         currentIteration++;
+        currentTimeFrameClicked = false;
         currentIterationClicked = false;
     }
 
@@ -101,9 +109,9 @@ public class Shroom : MonoBehaviour
     {
         if (onReward != null)
             onReward();
-        tries--;
+        //tries--;
         lifes++;
-        if (lifes > 4 || tries < 0)
+        if (lifes > 5 || tries < 0)
             Launch();
         Tween.LocalScale(body, body.localScale * 1.2f, 0.5f, 0f, Tween.EaseSpring);
         displayHint = false;
@@ -112,11 +120,9 @@ public class Shroom : MonoBehaviour
 
     void punish()
     {
-        if(tries < 0)
-
         if (onPunish != null)
             onPunish();
-        tries--;
+        //tries--;
         lifes--;
         if (lifes < 1)
             Destroy(gameObject, 0.5f);
@@ -130,6 +136,13 @@ public class Shroom : MonoBehaviour
         GameManager.instance.RemoveLife();
         visualStateMachine.ChangeState("crime");
         StartCoroutine(visualPunishment());
+        currentState = ShroomState.Upcomming;
+    }
+
+    void punishMiss()
+    {
+        if (onPunishMiss != null)
+            onPunishMiss();
     }
 
     public void Launch()

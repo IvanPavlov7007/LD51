@@ -9,6 +9,10 @@ public class ShroomWorker : ShroomComponent
     {
     }
 
+    protected override void onPunishMiss()
+    {
+    }
+
     protected override void onReady()
     {
         Tween.Spline(GetComponentInChildren<Spline>(), transform, 0f, 1f, true, 0.5f, 0f, Tween.EaseIn);
