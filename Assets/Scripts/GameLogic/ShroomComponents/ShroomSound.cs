@@ -11,26 +11,18 @@ public class ShroomSound : ShroomComponent
     protected override void Start()
     {
         base.Start();
-        shroom = GetComponent<Shroom>();
         aud = GetComponent<AudioSource>();
-        aud.PlayOneShot(sound);
+        shroom.onReward += onReward;
+        shroom.onPunishMiss += onMiss;
     }
 
-    protected override void onReward()
+    void onMiss()
+    {
+        aud.PlayOneShot(sound,0.5f);
+    }
+    
+    protected void onReward()
     {
         aud.PlayOneShot(sound);
-    }
-
-    protected override void onPunish()
-    {
-    }
-
-    protected override void onReady()
-    {
-    }
-
-    protected override void onPunishMiss()
-    {
-
     }
 }

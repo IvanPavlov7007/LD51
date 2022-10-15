@@ -6,23 +6,15 @@ using System;
 
 public class ShroomAttacker : ShroomComponent
 {
-    protected override void onPunish()
+    protected override void Start()
     {
+        base.Start();
+        shroom.onReward += onReady;
     }
-
-    protected override void onPunishMiss()
+    protected void onReady()
     {
-
-    }
-
-    protected override void onReady()
-    {
-        Tween.Position(transform, transform.position + Vector3.right * 20, 2f, 0f, Tween.EaseIn);
+        //Tween.Position(transform, transform.position + Vector3.right * 20, 2f, 0f, Tween.EaseIn);
         Run.After(1f, () => { GameManager.instance.enemy.health.Hit((int)Math.Pow(10, shroom.lifes - 1)); });
-        Destroy(gameObject, 2f);
-    }
-
-    protected override void onReward()
-    {
+        //Destroy(gameObject, 2f);
     }
 }

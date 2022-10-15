@@ -21,6 +21,7 @@ public class TimerWithAFrame : ClampedTimer
     protected override void Awake()
     {
         base.Awake();
+        currentlyInFrame = true;
         elapsedTime = 0f;
         timeFrame = initialTimeFrame;
         halfFrameTime = timeFrame / 2f;
@@ -63,6 +64,7 @@ public class TimerWithAFrame : ClampedTimer
         elapsedTime = 0f;
         iterationExitTimeoutTriggered = false;
         iterationEnterTimeoutTriggered = false;
+        Continue();
     }
 
     public virtual void Continue()

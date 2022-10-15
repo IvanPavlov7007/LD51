@@ -5,22 +5,15 @@ using Pixelplacement;
 
 public class ShroomWorker : ShroomComponent
 {
-    protected override void onPunish()
+    protected override void Start()
     {
+        base.Start();
+        shroom.onReady += onReady;
     }
-
-    protected override void onPunishMiss()
+    protected void onReady()
     {
-    }
-
-    protected override void onReady()
-    {
-        Tween.Spline(GetComponentInChildren<Spline>(), transform, 0f, 1f, true, 0.5f, 0f, Tween.EaseIn);
+        //Tween.Spline(GetComponentInChildren<Spline>(), transform, 0f, 1f, true, 0.5f, 0f, Tween.EaseIn);
         Run.After(0.1f, () => { GameManager.instance.money += shroom.lifes / 4.0; });
-        Destroy(gameObject, 1f);
-    }
-
-    protected override void onReward()
-    {
+        //Destroy(gameObject, 1f);
     }
 }

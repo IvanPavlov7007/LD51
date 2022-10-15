@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 536363193}
   - component: {fileID: 536363192}
+  - component: {fileID: 6701213133451816166}
+  - component: {fileID: 7582946802881150399}
   m_Layer: 0
   m_Name: Circle
   m_TagString: Untagged
@@ -84,6 +86,34 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!58 &6701213133451816166
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536363191}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.625
+--- !u!114 &7582946802881150399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536363191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c4ebadd79e9bbd4d877831c56731bc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &58461911147994381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1160,7 +1190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2a5666119df994d94133d7a735dbe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteColor: {r: 1, g: 1, b: 1, a: 1}
+  spriteColor: {r: 0.5921569, g: 0.7019608, b: 0.627451, a: 1}
 --- !u!1 &1024082974985308429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8038903241449676133, guid: ff86bafc28944e24c8d85918a14a8a00,
@@ -1211,22 +1241,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7041850729058686056}
   m_PrefabAsset: {fileID: 0}
---- !u!58 &7771147154704750875
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7443941228817658502}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &-3270160867045911414
 MonoBehaviour:
   m_ObjectHideFlags: 0

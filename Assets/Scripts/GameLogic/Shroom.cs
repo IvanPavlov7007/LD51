@@ -3,15 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Pixelplacement;
+using Pixelplacement.TweenSystem;
 
 public class Shroom : MonoBehaviour
 {
-    ShroomState currentState;
+    public ShroomState currentState { get; set; }
     StateMachine visualStateMachine;
     TimerWithAFrame timer;
-    bool currentIterationClicked = false;
-    bool displayHint = true;
-    int currentIteration;
     Transform body;
 
     public int price;
@@ -38,14 +36,11 @@ public class Shroom : MonoBehaviour
         visualStateMachine = GetComponentInChildren<StateMachine>();
         timer.onFrameTimeout += FrameTimeOut;
         timer.onFrameEnter += FrameEnter;
-        currentState = ShroomState.Upcomming;
+        currentState = ShroomState.Inactive;
 
         ShroomPool.getShroomClass(shroomType).shrooms.Add(this);
 
-        lifes = 3;
-        tries = 4;
-
-        displayState();
+        lifes = 0;
 
         if(BeatManager.instance != null)
             BeatManager.instance.registerNewShroom(this);
@@ -60,46 +55,30 @@ public class Shroom : MonoBehaviour
 
     public void Click()
     {
-        if(timer.CheckIfInFrame())
+        if (currentState == ShroomState.Inactive)
+            reward();
+        else if(timer.CheckIfInFrame())
         {
             if(!currentTimeFrameClicked)
                 reward();
-            currentTimeFrameClicked = true;
-            currentState = ShroomState.Default;
-            displayState();
         }
         else
         {
             punish();
-            currentState = ShroomState.Upcomming;
         }
-        currentIterationClicked = true;
     }
 
     public void FrameTimeOut()
     {
-        if (currentIteration > 0)
+        if (!currentTimeFrameClicked)
         {
-            currentState = ShroomState.Default;
-            if (!currentIterationClicked)
-            {
-                punish();
-            }
-            else
-            {
-                displayState();
-            }
+            punishMiss();
         }
-        currentIteration++;
-        currentTimeFrameClicked = false;
-        currentIterationClicked = false;
     }
 
     public void FrameEnter()
     {
-            if(displayHint)
-        currentState = ShroomState.Hitnow;
-        displayState();
+        currentTimeFrameClicked = false;
     }
 
     public int lifes { get; private set; }
@@ -107,40 +86,74 @@ public class Shroom : MonoBehaviour
 
     void reward()
     {
+        if (lifes < 3)
+        {
+            lifes++;
+            setState(ShroomState.Active);
+        }
+        
+        if (lifes == 3)
+        {
+            setState(ShroomState.Fever);
+        }
+
+        currentTimeFrameClicked = true;
+
         if (onReward != null)
             onReward();
-        //tries--;
-        lifes++;
-        if (lifes > 5 || tries < 0)
-            Launch();
-        Tween.LocalScale(body, body.localScale * 1.2f, 0.5f, 0f, Tween.EaseSpring);
-        displayHint = false;
-        GameManager.instance.AddScore(1);
     }
 
     void punish()
     {
-        if (onPunish != null)
-            onPunish();
-        //tries--;
-        lifes--;
-        if (lifes < 1)
-            Destroy(gameObject, 0.5f);
-        else if (tries < 0)
-            Launch();
-
-        Tween.LocalScale(body, body.localScale * 5f / 6f, 0.5f, 0f, Tween.EaseSpring);
-        //timer.Reset();
-        
-        displayHint = true;
-        GameManager.instance.RemoveLife();
+        setState(ShroomState.Inactive);
         visualStateMachine.ChangeState("crime");
         StartCoroutine(visualPunishment());
-        currentState = ShroomState.Upcomming;
+
+        if (onPunish != null)
+            onPunish();
+    }
+    TweenBase lastTween;
+    void setState(ShroomState state)
+    {
+
+        switch (state)
+        {
+            case ShroomState.Inactive:
+                if (lastTween != null) lastTween.Stop();
+                lastTween = Tween.LocalScale(body, Vector3.one, 0.5f, 0f, Tween.EaseSpring);
+                lifes = 0;
+                timer.Pause();
+                break;
+            case ShroomState.Active:
+                if (lastTween != null) lastTween.Stop();
+                lastTween = Tween.LocalScale(body, Vector3.one * Mathf.Pow(1.2f,lifes), 0.5f, 0f, Tween.EaseSpring);
+                if (timer.paused)
+                    timer.Reset();
+                break;
+            case ShroomState.Fever:
+                if (lastTween != null) lastTween.Stop();
+                if (currentState != ShroomState.Fever)
+                    lastTween = Tween.LocalScale(body, Vector3.one * Mathf.Pow(1.2f, lifes), 0.5f, 0f, Tween.EaseSpring);
+                Launch();
+                if (timer.paused)
+                    timer.Reset();
+                break;
+        }
+        currentState = state;
     }
 
     void punishMiss()
     {
+        lifes--;
+        if (lifes > 0)
+        {
+            setState(ShroomState.Active);
+        }
+        else
+        {
+            punish();
+        }
+
         if (onPunishMiss != null)
             onPunishMiss();
     }
@@ -153,23 +166,13 @@ public class Shroom : MonoBehaviour
 
     IEnumerator visualPunishment()
     {
+        visualStateMachine.ChangeState("crime");
         yield return new WaitForSeconds(0.2f);
-        displayState();
-    }
-
-    void displayState()
-    {
-        visualStateMachine.ChangeState((int)currentState);
-    }
-    
-
-    private void OnMouseDown()
-    {
-        Click();
+        visualStateMachine.ChangeState("default");
     }
 }
 [Serializable]
 public enum ShroomType { Worker, Attacker }
 
 
-public enum ShroomState { Default, Upcomming, Hitnow}
+public enum ShroomState { Inactive, Active, Fever}

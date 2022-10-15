@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialTimerTick: 10
-  startOnAwake: 1
+  startOnAwake: 0
   initialTimeFrame: 2
 --- !u!82 &4288543154260963751
 AudioSource:
